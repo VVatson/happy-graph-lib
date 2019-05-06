@@ -20,7 +20,7 @@ public class WeightedEdgeTest {
 
     @Test
     public void canCreateWeightedEdge() {
-        AbstractEdge<String> edge = WeightedEdge.of("one", "two", WEIGHT);
+        Edge<String> edge = WeightedEdge.of("one", "two", WEIGHT);
 
         assertEquals("one", edge.getFrom());
         assertEquals("two", edge.getTo());
@@ -29,10 +29,10 @@ public class WeightedEdgeTest {
 
     @Test
     public void canRevertWeightedEdge() {
-        AbstractEdge<String> expected = WeightedEdge.of("two", "one",WEIGHT);
-        AbstractEdge<String> edge = WeightedEdge.of("one", "two", WEIGHT);
+        Edge<String> expected = WeightedEdge.of("two", "one",WEIGHT);
+        Edge<String> edge = WeightedEdge.of("one", "two", WEIGHT);
 
-        AbstractEdge<String> actual = edge.revert();
+        Edge<String> actual = edge.revert();
 
         assertEquals(expected, actual);
     }
@@ -71,34 +71,34 @@ public class WeightedEdgeTest {
 
     @Test
     public void canCompareTwoEqualWeightedEdges() {
-        WeightedEdge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
-        WeightedEdge<Integer> second = WeightedEdge.of(1, 2, WEIGHT);
+        Edge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
+        Edge<Integer> second = WeightedEdge.of(1, 2, WEIGHT);
 
         assertEquals(first, second);
     }
 
     @Test
     public void canCompareTwoUnequalWeightedEdges() {
-        WeightedEdge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
-        WeightedEdge<Integer> second = WeightedEdge.of(1, 2, 6);
+        Edge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
+        Edge<Integer> second = WeightedEdge.of(1, 2, 6);
 
         assertNotEquals(first, second);
     }
 
     @Test
     public void canCompareTwoOppositeWeightedEdges() {
-        WeightedEdge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
-        WeightedEdge<Integer> second = WeightedEdge.of(2, 1, WEIGHT);
+        Edge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
+        Edge<Integer> second = WeightedEdge.of(2, 1, WEIGHT);
 
         assertNotEquals(first, second);
     }
 
     @Test
     public void canCompareTwoWeightedEdgesUsingCompareToMethod() {
-        WeightedEdge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
-        WeightedEdge<Integer> second = WeightedEdge.of(2, 3, WEIGHT);
-        WeightedEdge<Integer> third = WeightedEdge.of(3, 4, WEIGHT - 1);
-        WeightedEdge<Integer> fourth = WeightedEdge.of(4, 5, WEIGHT + 1);
+        Edge<Integer> first = WeightedEdge.of(1, 2, WEIGHT);
+        Edge<Integer> second = WeightedEdge.of(2, 3, WEIGHT);
+        Edge<Integer> third = WeightedEdge.of(3, 4, WEIGHT - 1);
+        Edge<Integer> fourth = WeightedEdge.of(4, 5, WEIGHT + 1);
 
         assertEquals(0, first.compareTo(second));
         assertEquals(1, first.compareTo(third));

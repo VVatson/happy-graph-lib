@@ -7,7 +7,7 @@ import com.kumaev.graph.DirectedGraph;
 import com.kumaev.graph.Graph;
 import com.kumaev.graph.Path;
 import com.kumaev.graph.UndirectedGraph;
-import com.kumaev.graph.edge.Edge;
+import com.kumaev.graph.edge.UnweightedEdge;
 import com.kumaev.graph.edge.WeightedEdge;
 import org.junit.Test;
 
@@ -19,12 +19,12 @@ public abstract class CommonPathAlgorithmTest {
 
     @Test
     public void canFindPathInDirectedGraph() {
-        Graph<Integer, Edge<Integer>> graph = new DirectedGraph<>();
+        Graph<Integer, UnweightedEdge<Integer>> graph = new DirectedGraph<>();
         graph.addVertex(1);
         graph.addVertex(2);
         graph.addVertex(3);
-        graph.addEdge(Edge.of(1, 2));
-        graph.addEdge(Edge.of(2, 3));
+        graph.addEdge(UnweightedEdge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(2, 3));
 
         Path<Integer> path = graph.getPath(1, 3, algorithm).get();
 
@@ -33,12 +33,12 @@ public abstract class CommonPathAlgorithmTest {
 
     @Test
     public void canFindPathInUndirectedGraph() {
-        Graph<Integer, Edge<Integer>> graph = new UndirectedGraph<>();
+        Graph<Integer, UnweightedEdge<Integer>> graph = new UndirectedGraph<>();
         graph.addVertex(1);
         graph.addVertex(2);
         graph.addVertex(3);
-        graph.addEdge(Edge.of(1, 2));
-        graph.addEdge(Edge.of(2, 3));
+        graph.addEdge(UnweightedEdge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(2, 3));
 
         Path<Integer> path = graph.getPath(3, 1, algorithm).get();
 
@@ -77,12 +77,12 @@ public abstract class CommonPathAlgorithmTest {
 
     @Test
     public void cannotFindPathInDirectedGraph() {
-        Graph<Integer, Edge<Integer>> graph = new DirectedGraph<>();
+        Graph<Integer, UnweightedEdge<Integer>> graph = new DirectedGraph<>();
         graph.addVertex(1);
         graph.addVertex(2);
         graph.addVertex(3);
-        graph.addEdge(Edge.of(1, 2));
-        graph.addEdge(Edge.of(2, 3));
+        graph.addEdge(UnweightedEdge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(2, 3));
 
         Optional<Path<Integer>> path = graph.getPath(3, 1, algorithm);
 
@@ -91,11 +91,11 @@ public abstract class CommonPathAlgorithmTest {
 
     @Test
     public void cannotFindPathBetweenDisconnectedVertices() {
-        Graph<Integer, Edge<Integer>> graph = new DirectedGraph<>();
+        Graph<Integer, UnweightedEdge<Integer>> graph = new DirectedGraph<>();
         graph.addVertex(1);
         graph.addVertex(2);
         graph.addVertex(3);
-        graph.addEdge(Edge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(1, 2));
 
         Optional<Path<Integer>> path = graph.getPath(1, 3, algorithm);
 
