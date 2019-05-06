@@ -39,8 +39,8 @@ public final class SadnessExceptionConstants {
         Map<String, String> codeToRecipe = new HashMap<>();
         codeToRecipe.put(VERTEX_IS_NULL_SADNESS_CODE, "Please specify a not null vertex.");
         codeToRecipe.put(EDGE_IS_NULL_SADNESS_CODE, "Please specify a not null edge. " +
-                "You can use Edge.of(v1, v2) and WeightedEdge.of(v1, v2) methods to unweighted and weighted edges, respectively " +
-                "or implement own by implementing the AbstractEdge interface.");
+                "You can use UnweightedEdge.of(v1, v2) and WeightedEdge.of(v1, v2) methods to unweighted and weighted edges, respectively " +
+                "or implement own by implementing the Edge interface.");
         codeToRecipe.put(ALGORITHM_IS_NULL_SADNESS_CODE, "Please specify a not null algorithm. " +
                 "You can use one of the presented algorithms in the happy-graph-lib (BFSPathAlgorithm/DijkstraPathAlgorithm) " +
                 "or implement own by implementing the PathAlgorithm interface.");

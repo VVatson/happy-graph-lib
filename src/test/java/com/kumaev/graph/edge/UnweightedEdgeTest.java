@@ -10,14 +10,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class EdgeTest {
+public class UnweightedEdgeTest {
 
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Test
     public void canCreateEdge() {
-        AbstractEdge<String> edge = Edge.of("one", "two");
+        Edge<String> edge = UnweightedEdge.of("one", "two");
 
         assertEquals("one", edge.getFrom());
         assertEquals("two", edge.getTo());
@@ -25,10 +25,10 @@ public class EdgeTest {
 
     @Test
     public void canRevertEdge() {
-        AbstractEdge<String> expected = Edge.of("two", "one");
-        AbstractEdge<String> edge = Edge.of("one", "two");
+        Edge<String> expected = UnweightedEdge.of("two", "one");
+        Edge<String> edge = UnweightedEdge.of("one", "two");
 
-        AbstractEdge<String> actual = edge.revert();
+        Edge<String> actual = edge.revert();
 
         assertEquals(expected, actual);
     }
@@ -38,7 +38,7 @@ public class EdgeTest {
         expectedEx.expect(YouMadeGraphLibSadException.class);
         expectedEx.expectMessage(CANNOT_CREATE_EDGE_BETWEEN_SAME_VERTICES_MESSAGE);
 
-        Edge.of(1, 1);
+        UnweightedEdge.of(1, 1);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class EdgeTest {
         expectedEx.expect(YouMadeGraphLibSadException.class);
         expectedEx.expectMessage(VERTEX_CANNOT_BE_NULL_MESSAGE);
 
-        Edge.of(null, 1);
+        UnweightedEdge.of(null, 1);
     }
 
     @Test
@@ -54,29 +54,29 @@ public class EdgeTest {
         expectedEx.expect(YouMadeGraphLibSadException.class);
         expectedEx.expectMessage(VERTEX_CANNOT_BE_NULL_MESSAGE);
 
-        Edge.of(1, null);
+        UnweightedEdge.of(1, null);
     }
 
     @Test
     public void canCompareTwoEqualEdges() {
-        Edge<Integer> first = Edge.of(1, 2);
-        Edge<Integer> second = Edge.of(1, 2);
+        Edge<Integer> first = UnweightedEdge.of(1, 2);
+        Edge<Integer> second = UnweightedEdge.of(1, 2);
 
         assertEquals(first, second);
     }
 
     @Test
     public void canCompareTwoUnequalVertices() {
-        Edge<Integer> first = Edge.of(1, 2);
-        Edge<Integer> second = Edge.of(2, 3);
+        Edge<Integer> first = UnweightedEdge.of(1, 2);
+        Edge<Integer> second = UnweightedEdge.of(2, 3);
 
         assertNotEquals(first, second);
     }
 
     @Test
     public void canCompareTwoOppositeVertices() {
-        Edge<Integer> first = Edge.of(1, 2);
-        Edge<Integer> second = Edge.of(2, 1);
+        Edge<Integer> first = UnweightedEdge.of(1, 2);
+        Edge<Integer> second = UnweightedEdge.of(2, 1);
 
         assertNotEquals(first, second);
     }

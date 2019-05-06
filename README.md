@@ -31,7 +31,7 @@ mvn clean install
 - Two algorithms to find a path in a graph 
   * [Breadth-first search (BFS)](https://en.wikipedia.org/wiki/Breadth-first_search) is an algorithm for traversing or searching tree or graph data structures
   * [Dijkstra's Shortest Path First (SPF)](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) is an algorithm for finding the shortest paths between nodes in a graph
-- Ability to use own type of edge by extending `AbstractEdge<V>` class
+- Ability to use own type of edge by implementing the `Edge<V>` interface
 - Ability to use own algorithm by implementing the `PathAlgorithm<V>` interface
 - Ability to choose a type of exception to catch
   * `IllegalArgumentException` is well-known exception to indicate that a method has been passed an illegal or inappropriate argument 
@@ -48,7 +48,7 @@ import com.kumaev.graph.DirectedGraph;
 import com.kumaev.graph.Graph;
 import com.kumaev.graph.Path;
 import com.kumaev.graph.UndirectedGraph;
-import com.kumaev.graph.edge.Edge;
+import com.kumaev.graph.edge.UnweightedEdge;
 import com.kumaev.graph.edge.WeightedEdge;
 
 public abstract class CommonPathAlgorithmTest  {
@@ -57,12 +57,12 @@ public abstract class CommonPathAlgorithmTest  {
 
     @Test
     public void canFindPathInDirectedGraph() {
-        Graph<Integer, Edge<Integer>> graph = new DirectedGraph<>();
+        Graph<Integer, UnweightedEdge<Integer>> graph = new DirectedGraph<>();
         graph.addVertex(1);
         graph.addVertex(2);
         graph.addVertex(3);
-        graph.addEdge(Edge.of(1, 2));
-        graph.addEdge(Edge.of(2, 3));
+        graph.addEdge(UnweightedEdge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(2, 3));
 
         Path<Integer> path = graph.getPath(1, 3, algorithm).get();
 

@@ -3,8 +3,8 @@ package com.kumaev.graph;
 import static com.kumaev.graph.exception.SadnessExceptionConstants.*;
 import static org.junit.Assert.assertEquals;
 
-import com.kumaev.graph.edge.AbstractEdge;
 import com.kumaev.graph.edge.Edge;
+import com.kumaev.graph.edge.UnweightedEdge;
 import com.kumaev.graph.exception.YouMadeGraphLibSadException;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class DirectedGraphTest {
 
-    private DirectedGraph<Integer, Edge<Integer>> graph;
+    private DirectedGraph<Integer, UnweightedEdge<Integer>> graph;
 
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
@@ -29,24 +29,24 @@ public class DirectedGraphTest {
 
     @Test
     public void canAddVertex() {
-        Set<AbstractEdge<Integer>> expectedAdjEdges = new HashSet<>();
+        Set<Edge<Integer>> expectedAdjEdges = new HashSet<>();
 
         graph.addVertex(1);
-        Map<Integer, Set<AbstractEdge<Integer>>> verticesToEdges = graph.getVerticesToEdges();
+        Map<Integer, Set<Edge<Integer>>> verticesToEdges = graph.getVerticesToEdges();
 
         assertEquals(expectedAdjEdges, verticesToEdges.get(1));
     }
 
     @Test
     public void canAddEdge() {
-        Set<AbstractEdge<Integer>> expectedAdjEdgesFromOne = new HashSet<>();
-        expectedAdjEdgesFromOne.add(Edge.of(1, 2));
-        Set<AbstractEdge<Integer>> expectedAdjEdgesFromTwo = new HashSet<>();
+        Set<Edge<Integer>> expectedAdjEdgesFromOne = new HashSet<>();
+        expectedAdjEdgesFromOne.add(UnweightedEdge.of(1, 2));
+        Set<Edge<Integer>> expectedAdjEdgesFromTwo = new HashSet<>();
 
         graph.addVertex(1);
         graph.addVertex(2);
-        graph.addEdge(Edge.of(1, 2));
-        Map<Integer, Set<AbstractEdge<Integer>>> verticesToEdges = graph.getVerticesToEdges();
+        graph.addEdge(UnweightedEdge.of(1, 2));
+        Map<Integer, Set<Edge<Integer>>> verticesToEdges = graph.getVerticesToEdges();
 
         assertEquals(expectedAdjEdgesFromOne, verticesToEdges.get(1));
         assertEquals(expectedAdjEdgesFromTwo, verticesToEdges.get(2));
@@ -57,8 +57,8 @@ public class DirectedGraphTest {
         graph.addVertex(1);
         graph.addVertex(2);
         graph.addVertex(3);
-        graph.addEdge(Edge.of(1, 2));
-        graph.addEdge(Edge.of(2, 3));
+        graph.addEdge(UnweightedEdge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(2, 3));
 
         Path<Integer> actual = graph.getPath(1, 3).get();
 
@@ -87,7 +87,7 @@ public class DirectedGraphTest {
         expectedEx.expectMessage(CANNOT_CREATE_EDGE_WHEN_SOURCE_IS_NOT_PRESENT_MESSAGE);
 
         graph.addVertex(2);
-        graph.addEdge(Edge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(1, 2));
     }
 
     @Test
@@ -96,7 +96,7 @@ public class DirectedGraphTest {
         expectedEx.expectMessage(CANNOT_CREATE_EDGE_WHEN_DESTINATION_IS_NOT_PRESENT_MESSAGE);
 
         graph.addVertex(1);
-        graph.addEdge(Edge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(1, 2));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class DirectedGraphTest {
 
         graph.addVertex(1);
         graph.addVertex(2);
-        graph.addEdge(Edge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(1, 2));
 
         graph.getPath(null, 2);
     }
@@ -118,7 +118,7 @@ public class DirectedGraphTest {
 
         graph.addVertex(1);
         graph.addVertex(2);
-        graph.addEdge(Edge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(1, 2));
 
         graph.getPath(2, null);
     }
@@ -150,7 +150,7 @@ public class DirectedGraphTest {
 
         graph.addVertex(1);
         graph.addVertex(2);
-        graph.addEdge(Edge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(1, 2));
 
         graph.getPath(1, 1);
     }
@@ -162,7 +162,7 @@ public class DirectedGraphTest {
 
         graph.addVertex(1);
         graph.addVertex(2);
-        graph.addEdge(Edge.of(1, 2));
+        graph.addEdge(UnweightedEdge.of(1, 2));
 
         graph.getPath(1, 2, null);
     }
