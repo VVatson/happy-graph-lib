@@ -3,11 +3,9 @@ package com.kumaev.graph.edge;
 import static com.kumaev.graph.util.Preconditions.checkEdge;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
-@Getter
 @EqualsAndHashCode
-public abstract class AbstractEdge<V> implements Comparable<AbstractEdge<V>> {
+abstract class AbstractEdge<V> implements Edge<V> {
 
     final V from;
     final V to;
@@ -19,11 +17,18 @@ public abstract class AbstractEdge<V> implements Comparable<AbstractEdge<V>> {
         this.to = to;
     }
 
-    public abstract AbstractEdge<V> revert();
+    @Override
+    public V getFrom() {
+        return from;
+    }
 
-    public abstract int getWeight();
+    @Override
+    public V getTo() {
+        return to;
+    }
 
-    public int compareTo(AbstractEdge<V> another) {
+    @Override
+    public int compareTo(Edge<V> another) {
         return this.getWeight() - another.getWeight();
     }
 }

@@ -3,7 +3,7 @@ package com.kumaev.graph.util;
 import static com.kumaev.graph.exception.SadnessExceptionConstants.*;
 
 import com.kumaev.graph.algorithm.PathAlgorithm;
-import com.kumaev.graph.edge.AbstractEdge;
+import com.kumaev.graph.edge.Edge;
 import com.kumaev.graph.exception.YouMadeGraphLibSadException;
 
 import java.util.Map;
@@ -19,7 +19,7 @@ public final class Preconditions {
         }
     }
 
-    public static <V> void checkVertex(V vertex, Map<V, Set<AbstractEdge<V>>> verticesToEdges) {
+    public static <V> void checkVertex(V vertex, Map<V, Set<Edge<V>>> verticesToEdges) {
         checkVertexNotNull(vertex);
 
         if (!verticesToEdges.containsKey(vertex)) {
@@ -28,7 +28,7 @@ public final class Preconditions {
     }
 
     public static <V> void checkVertices(V source, V destination,
-                                         Map<V, Set<AbstractEdge<V>>> verticesToEdges) {
+                                         Map<V, Set<Edge<V>>> verticesToEdges) {
         checkVertex(source, verticesToEdges);
         checkVertex(destination, verticesToEdges);
         if (source.equals(destination)) {
@@ -45,7 +45,7 @@ public final class Preconditions {
         }
     }
 
-    public static <V> void checkEdge(AbstractEdge<V> edge, Map<V, Set<AbstractEdge<V>>> verticesToEdges) {
+    public static <V> void checkEdge(Edge<V> edge, Map<V, Set<Edge<V>>> verticesToEdges) {
         checkEdgeNotNull(edge);
         if (!verticesToEdges.containsKey(edge.getFrom())) {
             throw new YouMadeGraphLibSadException(CANNOT_CREATE_EDGE_WHEN_SOURCE_IS_NOT_PRESENT_MESSAGE, EDGE_SOURCE_IS_NOT_PRESENT_IN_GRAPH_SADNESS_CODE);
@@ -55,7 +55,7 @@ public final class Preconditions {
         }
     }
 
-    public static <V> void checkEdgeNotNull(AbstractEdge<V> edge) {
+    public static <V> void checkEdgeNotNull(Edge<V> edge) {
         if (edge == null) {
             throw new YouMadeGraphLibSadException(EDGE_CANNOT_BE_NULL_MESSAGE, EDGE_IS_NULL_SADNESS_CODE);
         }

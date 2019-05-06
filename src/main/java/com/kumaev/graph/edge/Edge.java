@@ -1,30 +1,38 @@
 package com.kumaev.graph.edge;
 
-import lombok.EqualsAndHashCode;
+/**
+ * Graph's edge interface that represents some connection between two vertices in a graph.
+ *
+ * @param <V> the graph vertex class that must contain properly overridden {@link Object#equals(Object)}
+ *           and {@link Object#hashCode()} methods.
+ */
+public interface Edge<V> extends Comparable<Edge<V>> {
 
-@EqualsAndHashCode(callSuper = true)
-public class Edge<V> extends AbstractEdge<V> {
+    /**
+     * Returns the vertex from which this edge originates.
+     *
+     * @return the from vertex.
+     */
+    V getFrom();
 
-    private Edge(V from, V to) {
-        super(from, to);
-    }
+    /**
+     * Returns the vertex to which this edge is pointing.
+     *
+     * @return the to vertex.
+     */
+    V getTo();
 
-    public static <V> Edge<V> of(V from, V to) {
-        return new Edge<>(from, to);
-    }
+    /**
+     * Reverts this edge.
+     *
+     * @return a new edge whose from and to vertices swapped.
+     */
+    Edge<V> revert();
 
-    @Override
-    public AbstractEdge<V> revert() {
-        return new Edge<>(to, from);
-    }
-
-    @Override
-    public int getWeight() {
-        return 1;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + from + " - " + to + ")";
-    }
+    /**
+     * Returns the weight of this edge.
+     *
+     * @return the edge's weight.
+     */
+    int getWeight();
 }

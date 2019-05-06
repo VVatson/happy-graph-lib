@@ -1,60 +1,78 @@
 package com.kumaev.graph;
 
-import static com.kumaev.graph.util.Preconditions.checkAlgorithmNotNull;
-import static com.kumaev.graph.util.Preconditions.checkEdge;
-import static com.kumaev.graph.util.Preconditions.checkVertexNotNull;
-import static com.kumaev.graph.util.Preconditions.checkVertices;
-
-import com.kumaev.graph.algorithm.BFSPathAlgorithm;
 import com.kumaev.graph.algorithm.PathAlgorithm;
-import com.kumaev.graph.edge.AbstractEdge;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.kumaev.graph.edge.Edge;
+import com.kumaev.graph.exception.YouMadeGraphLibSadException;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-public abstract class Graph<V, E extends AbstractEdge<V>> {
+/**
+ * Common interface for interacting with a graph.
+ *
+ * @param <V> the graph vertex class that must contain properly overridden {@link Object#equals(Object)}
+ *           and {@link Object#hashCode()} methods.
+ * @param <E> the graph edge class that must contain properly overridden {@link Object#equals(Object)}
+ *           and {@link Object#hashCode()} methods.
+ */
+public interface Graph<V, E extends Edge<V>> {
 
-    private Map<V, Set<AbstractEdge<V>>> verticesToEdges = new HashMap<>();
+    /**
+     * Returns the graph representation as a map of all vertices and all outgoing edges.
+     *
+     * @return map of all vertices and all outgoing edges.
+     */
+    Map<V, Set<Edge<V>>> getVerticesToEdges();
 
-    public void addVertex(V vertex) {
-        checkVertexNotNull(vertex);
+    /**
+     * Creates a new vertex in this graph.
+     *
+     * @param vertex new vertex to be added in the graph.
+     *
+     * @throws YouMadeGraphLibSadException if the vertex is null.
+     */
+    void addVertex(V vertex);
 
-        verticesToEdges.putIfAbsent(vertex, new HashSet<>());
-    }
+    /**
+     * Creates a new edge in this graph.
+     *
+     * @param edge new edge to be added in the graph.
+     *
+     * @throws YouMadeGraphLibSadException if the edge is null.
+     * @throws YouMadeGraphLibSadException if the graph does not contain the source or destination of the edge.
+     */
+    void addEdge(E edge);
 
-    public abstract void addEdge(E edge);
+    /**
+     * Returns a path from a source vertex to a destination vertex.
+     * By default, the BFS algorithm is used to compute a path. If you wish to use other algorithms
+     * please use {@link Graph#getPath(Object, Object, PathAlgorithm)} method.
+     *
+     * @param source the source vertex.
+     * @param destination the destination vertex.
+     *
+     * @return a path if it exists or empty if it doesn't exist.
+     *
+     * @throws YouMadeGraphLibSadException if the source or the destination is null.
+     * @throws YouMadeGraphLibSadException if the graph does not contain the source or destination vertices.
+     * @throws YouMadeGraphLibSadException if the source and the destination are the same vertices.
+     */
+    Optional<Path<V>> getPath(V source, V destination);
 
-    public Optional<Path<V>> getPath(V source, V destination) {
-        return getPath(source, destination, new BFSPathAlgorithm<>());
-    }
-
-    public Optional<Path<V>> getPath(V source, V destination, PathAlgorithm<V> pathAlgorithm) {
-        return getPath(source, destination, this, pathAlgorithm);
-    }
-
-    private static <V, E extends AbstractEdge<V>> Optional<Path<V>> getPath(V source, V destination,
-                                                                            Graph<V, E> graph,
-                                                                            PathAlgorithm<V> algorithm) {
-        checkVertices(source, destination, graph.getVerticesToEdges());
-        checkAlgorithmNotNull(algorithm);
-
-        return algorithm.getPath(source, destination, graph.getVerticesToEdges());
-    }
-
-    static <V, E extends AbstractEdge<V>> void addEdge(AbstractEdge<V> edge, Graph<V, E> graph) {
-        Map<V, Set<AbstractEdge<V>>> verticesToEdges = graph.getVerticesToEdges();
-        checkEdge(edge, verticesToEdges);
-
-        Set<AbstractEdge<V>> edges = verticesToEdges.get(edge.getFrom());
-        edges.add(edge);
-    }
+    /**
+     * Returns a path from a source vertex to a destination vertex.
+     *
+     * @param source the source vertex.
+     * @param destination the destination vertex.
+     * @param pathAlgorithm the algorithm to compute a path.
+     *
+     * @return a path if it exists or empty if it doesn't exist.
+     *
+     * @throws YouMadeGraphLibSadException if the algorithm is null.
+     * @throws YouMadeGraphLibSadException if the source or the destination is null.
+     * @throws YouMadeGraphLibSadException if the graph does not contain the source or destination vertices.
+     * @throws YouMadeGraphLibSadException if the source and the destination are the same vertices.
+     */
+    Optional<Path<V>> getPath(V source, V destination, PathAlgorithm<V> pathAlgorithm);
 }

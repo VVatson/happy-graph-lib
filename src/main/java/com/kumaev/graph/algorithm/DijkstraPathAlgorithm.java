@@ -1,9 +1,15 @@
 package com.kumaev.graph.algorithm;
 
 import com.kumaev.graph.Path;
-import com.kumaev.graph.edge.AbstractEdge;
+import com.kumaev.graph.edge.Edge;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class DijkstraPathAlgorithm<V> extends AbstractPathAlgorithm<V> {
 
@@ -19,10 +25,10 @@ public class DijkstraPathAlgorithm<V> extends AbstractPathAlgorithm<V> {
             if (currentVertex.equals(destination)) {
                 return;
             }
-            Iterator<AbstractEdge<V>> edgeIterator = verticesToEdges.get(currentVertex).iterator();
+            Iterator<Edge<V>> edgeIterator = verticesToEdges.get(currentVertex).iterator();
 
             while (edgeIterator.hasNext()) {
-                AbstractEdge<V> edge = edgeIterator.next();
+                Edge<V> edge = edgeIterator.next();
                 Integer distToCurrentVertex = distances.get(currentVertex);
                 relaxEdge(edge, distToCurrentVertex);
             }
@@ -39,7 +45,7 @@ public class DijkstraPathAlgorithm<V> extends AbstractPathAlgorithm<V> {
         traversalQueue.add(source);
     }
 
-    private void relaxEdge(AbstractEdge<V> edge, Integer distToCurrentVertex) {
+    private void relaxEdge(Edge<V> edge, Integer distToCurrentVertex) {
         V toVertex = edge.getTo();
         Integer candidateWeight = distToCurrentVertex + edge.getWeight();
 
@@ -55,7 +61,7 @@ public class DijkstraPathAlgorithm<V> extends AbstractPathAlgorithm<V> {
         }
     }
 
-    private void visitVertexByIncomingEdge(AbstractEdge<V> incomingEdge, Integer weight) {
+    private void visitVertexByIncomingEdge(Edge<V> incomingEdge, Integer weight) {
         V toVertex = incomingEdge.getTo();
         predecessors.put(toVertex, incomingEdge);
         distances.put(toVertex, weight);
