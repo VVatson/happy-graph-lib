@@ -1,8 +1,5 @@
 package com.kumaev.graph.edge;
 
-import lombok.EqualsAndHashCode;
-
-@EqualsAndHashCode(callSuper = true)
 public class UnweightedEdge<V> extends AbstractEdge<V> {
 
     private UnweightedEdge(V from, V to) {
@@ -26,5 +23,12 @@ public class UnweightedEdge<V> extends AbstractEdge<V> {
     @Override
     public String toString() {
         return "(" + from + " - " + to + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UnweightedEdge)) return false;
+        return super.equals(o);
     }
 }
