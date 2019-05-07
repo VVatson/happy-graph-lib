@@ -2,9 +2,8 @@ package com.kumaev.graph.edge;
 
 import static com.kumaev.graph.util.Preconditions.checkEdgeWeight;
 
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
 public class WeightedEdge<V> extends AbstractEdge<V> {
 
     private int weight;
@@ -32,5 +31,19 @@ public class WeightedEdge<V> extends AbstractEdge<V> {
     @Override
     public String toString() {
         return "(" + from + " -(" + weight + ")- " + to + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WeightedEdge)) return false;
+        if (!super.equals(o)) return false;
+        WeightedEdge<?> that = (WeightedEdge<?>) o;
+        return weight == that.weight;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), weight);
     }
 }

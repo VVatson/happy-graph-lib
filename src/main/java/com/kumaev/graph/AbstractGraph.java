@@ -8,17 +8,14 @@ import static com.kumaev.graph.util.Preconditions.checkVertices;
 import com.kumaev.graph.algorithm.BFSPathAlgorithm;
 import com.kumaev.graph.algorithm.PathAlgorithm;
 import com.kumaev.graph.edge.Edge;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-@ToString
-@EqualsAndHashCode
 abstract class AbstractGraph<V, E extends Edge<V>> implements Graph<V, E> {
 
     private Map<V, Set<Edge<V>>> verticesToEdges = new HashMap<>();
@@ -43,6 +40,19 @@ abstract class AbstractGraph<V, E extends Edge<V>> implements Graph<V, E> {
     @Override
     public Optional<Path<V>> getPath(V source, V destination, PathAlgorithm<V> pathAlgorithm) {
         return getPath(source, destination, this, pathAlgorithm);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractGraph)) return false;
+        AbstractGraph<?, ?> that = (AbstractGraph<?, ?>) o;
+        return Objects.equals(verticesToEdges, that.verticesToEdges);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(verticesToEdges);
     }
 
     private static <V, E extends Edge<V>> Optional<Path<V>> getPath(V source, V destination,
