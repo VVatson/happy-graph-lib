@@ -16,18 +16,34 @@ abstract class AbstractPathAlgorithm<V> implements PathAlgorithm<V> {
     V destination;
     Map<V, Set<Edge<V>>> verticesToEdges;
 
-    Set<V> visited = new HashSet<>();
-    Map<V, Edge<V>> predecessors = new HashMap<>();
+    Set<V> visited;
+    Map<V, Edge<V>> predecessors;
 
     public Optional<Path<V>> getPath(V source, V destination, Map<V, Set<Edge<V>>> verticesToEdges) {
+        initTraversalData(source, destination, verticesToEdges);
+
+        startTraversalProcess();
+        Optional<Path<V>> path = getPath();
+
+        deinitTraversalData();
+        return path;
+    }
+
+    private void initTraversalData(V source, V destination, Map<V, Set<Edge<V>>> verticesToEdges) {
         this.source = source;
         this.destination = destination;
         this.verticesToEdges = verticesToEdges;
-        startProcess();
-        return getPath();
+
+        int verticesNumber = verticesToEdges.size();
+        this.visited = new HashSet<>(verticesNumber);
+        this.predecessors = new HashMap<>(verticesNumber);
+
+        initSpecificAlgorithmTraversalData();
     }
 
-    abstract void startProcess();
+    abstract void initSpecificAlgorithmTraversalData();
+
+    abstract void startTraversalProcess();
 
     abstract Optional<Path<V>> getPath();
 
@@ -43,4 +59,16 @@ abstract class AbstractPathAlgorithm<V> implements PathAlgorithm<V> {
         Collections.reverse(path);
         return path;
     }
+
+    private void deinitTraversalData() {
+        this.source = null;
+        this.destination = null;
+        this.verticesToEdges = null;
+        this.visited = null;
+        this.predecessors = null;
+
+        deinitSpecificAlgorithmTraversalData();
+    }
+
+    abstract void deinitSpecificAlgorithmTraversalData();
 }

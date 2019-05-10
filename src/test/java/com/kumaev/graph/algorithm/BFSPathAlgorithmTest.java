@@ -7,13 +7,13 @@ import com.kumaev.graph.Graph;
 import com.kumaev.graph.Path;
 import com.kumaev.graph.UndirectedGraph;
 import com.kumaev.graph.edge.WeightedEdge;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class BFSPathAlgorithmTest extends CommonPathAlgorithmTest {
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         algorithm = new BFSPathAlgorithm<>();
     }
 
