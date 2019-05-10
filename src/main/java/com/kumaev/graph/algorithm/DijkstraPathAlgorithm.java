@@ -5,7 +5,6 @@ import com.kumaev.graph.edge.Edge;
 
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.PriorityQueue;
@@ -13,11 +12,18 @@ import java.util.Queue;
 
 public class DijkstraPathAlgorithm<V> extends AbstractPathAlgorithm<V> {
 
-    private Map<V, Integer> distances = new HashMap<>();
-    private Queue<V> traversalQueue = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+    private Map<V, Integer> distances;
+    private Queue<V> traversalQueue;
 
-    void startProcess() {
-        fillDistances();
+    @Override
+    void initSpecificAlgorithmTraversalData() {
+        distances = new HashMap<>(verticesToEdges.size());
+        verticesToEdges.keySet().forEach(v -> distances.put(v, Integer.MAX_VALUE));
+        traversalQueue = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+    }
+
+    @Override
+    void startTraversalProcess() {
         visitSourceVertex();
 
         while (!traversalQueue.isEmpty()) {
@@ -25,18 +31,12 @@ public class DijkstraPathAlgorithm<V> extends AbstractPathAlgorithm<V> {
             if (currentVertex.equals(destination)) {
                 return;
             }
-            Iterator<Edge<V>> edgeIterator = verticesToEdges.get(currentVertex).iterator();
 
-            while (edgeIterator.hasNext()) {
-                Edge<V> edge = edgeIterator.next();
+            for (Edge<V> edge : verticesToEdges.get(currentVertex)) {
                 Integer distToCurrentVertex = distances.get(currentVertex);
                 relaxEdge(edge, distToCurrentVertex);
             }
         }
-    }
-
-    private void fillDistances() {
-        verticesToEdges.keySet().forEach(v -> distances.put(v, Integer.MAX_VALUE));
     }
 
     private void visitSourceVertex() {
@@ -68,11 +68,18 @@ public class DijkstraPathAlgorithm<V> extends AbstractPathAlgorithm<V> {
         traversalQueue.add(toVertex);
     }
 
+    @Override
     Optional<Path<V>> getPath() {
         if (distances.get(destination).equals(Integer.MAX_VALUE)) {
             return Optional.empty();
         }
         Path<V> path = collectPath();
         return Optional.of(path);
+    }
+
+    @Override
+    void deinitSpecificAlgorithmTraversalData() {
+        this.distances = null;
+        this.traversalQueue = null;
     }
 }
