@@ -9,6 +9,7 @@ import com.kumaev.graph.algorithm.BFSPathAlgorithm;
 import com.kumaev.graph.algorithm.PathAlgorithm;
 import com.kumaev.graph.edge.Edge;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,8 +21,7 @@ abstract class AbstractGraph<V, E extends Edge<V>> implements Graph<V, E> {
 
     private Map<V, Set<Edge<V>>> verticesToEdges = new HashMap<>();
 
-    @Override
-    public Map<V, Set<Edge<V>>> getVerticesToEdges() {
+    Map<V, Set<Edge<V>>> getVerticesToEdges() {
         return verticesToEdges;
     }
 
@@ -33,13 +33,26 @@ abstract class AbstractGraph<V, E extends Edge<V>> implements Graph<V, E> {
     }
 
     @Override
+    public void addEdge(E edge) {
+        checkEdge(edge, verticesToEdges);
+
+        verticesToEdges.compute(edge.getFrom(), (vertex, edges) -> {
+            edges.add(edge);
+            return edges;
+        });
+    }
+
+    @Override
     public Optional<Path<V>> getPath(V source, V destination) {
         return getPath(source, destination, new BFSPathAlgorithm<>());
     }
 
     @Override
-    public Optional<Path<V>> getPath(V source, V destination, PathAlgorithm<V> pathAlgorithm) {
-        return getPath(source, destination, this, pathAlgorithm);
+    public Optional<Path<V>> getPath(V source, V destination, PathAlgorithm<V> algorithm) {
+        checkVertices(source, destination, verticesToEdges);
+        checkAlgorithmNotNull(algorithm);
+
+        return algorithm.getPath(source, destination, Collections.unmodifiableMap(verticesToEdges));
     }
 
     @Override
@@ -53,22 +66,5 @@ abstract class AbstractGraph<V, E extends Edge<V>> implements Graph<V, E> {
     @Override
     public int hashCode() {
         return Objects.hash(verticesToEdges);
-    }
-
-    private static <V, E extends Edge<V>> Optional<Path<V>> getPath(V source, V destination,
-                                                                    Graph<V, E> graph,
-                                                                    PathAlgorithm<V> algorithm) {
-        checkVertices(source, destination, graph.getVerticesToEdges());
-        checkAlgorithmNotNull(algorithm);
-
-        return algorithm.getPath(source, destination, graph.getVerticesToEdges());
-    }
-
-    static <V, E extends Edge<V>> void addEdge(Edge<V> edge, Graph<V, E> graph) {
-        Map<V, Set<Edge<V>>> verticesToEdges = graph.getVerticesToEdges();
-        checkEdge(edge, verticesToEdges);
-
-        Set<Edge<V>> edges = verticesToEdges.get(edge.getFrom());
-        edges.add(edge);
     }
 }

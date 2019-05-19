@@ -6,7 +6,7 @@ public class DirectedGraph<V, E extends Edge<V>> extends AbstractGraph<V, E> {
 
     @Override
     public void addEdge(E edge) {
-        addEdge(edge, this);
+        super.addEdge(edge);
     }
 
     @Override

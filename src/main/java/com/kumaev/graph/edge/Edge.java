@@ -27,7 +27,7 @@ public interface Edge<V> extends Comparable<Edge<V>> {
      *
      * @return a new edge whose from and to vertices swapped.
      */
-    Edge<V> revert();
+    <E extends Edge<V>> E revert();
 
     /**
      * Returns the weight of this edge.

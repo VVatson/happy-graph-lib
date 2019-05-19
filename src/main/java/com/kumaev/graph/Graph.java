@@ -4,9 +4,7 @@ import com.kumaev.graph.algorithm.PathAlgorithm;
 import com.kumaev.graph.edge.Edge;
 import com.kumaev.graph.exception.YouMadeGraphLibSadException;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Common interface for interacting with a graph.
@@ -17,13 +15,6 @@ import java.util.Set;
  *           and {@link Object#hashCode()} methods.
  */
 public interface Graph<V, E extends Edge<V>> {
-
-    /**
-     * Returns the graph representation as a map of all vertices and all outgoing edges.
-     *
-     * @return map of all vertices and all outgoing edges.
-     */
-    Map<V, Set<Edge<V>>> getVerticesToEdges();
 
     /**
      * Creates a new vertex in this graph.
