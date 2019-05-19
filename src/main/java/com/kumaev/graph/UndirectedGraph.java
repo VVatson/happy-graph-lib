@@ -10,8 +10,8 @@ public class UndirectedGraph<V, E extends Edge<V>> extends AbstractGraph<V, E> {
     public void addEdge(E edge) {
         checkEdgeNotNull(edge);
 
-        addEdge(edge, this);
-        addEdge(edge.revert(), this);
+        super.addEdge(edge);
+        super.addEdge(edge.revert());
     }
 
     @Override

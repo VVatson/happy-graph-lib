@@ -11,7 +11,7 @@ public class UnweightedEdge<V> extends AbstractEdge<V> {
     }
 
     @Override
-    public Edge<V> revert() {
+    public UnweightedEdge<V> revert() {
         return new UnweightedEdge<>(to, from);
     }
 
